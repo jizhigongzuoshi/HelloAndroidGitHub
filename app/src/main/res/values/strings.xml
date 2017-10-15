@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">HelloAndroidGitHub</string>
+    <string name="title_activity_launch_mode">LaunchModeActivity</string>
+
+    <string name="title_activity_single_task">SingleTaskActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>
