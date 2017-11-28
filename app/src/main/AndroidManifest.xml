@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cn.com.focus.helloandroidgithub">
 
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activity.launchmode.LaunchModeActivity"
+            android:name=".dialog.MainActvity"
             android:label="@string/title_activity_launch_mode"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -23,7 +25,14 @@
             android:name=".activity.launchmode.singletask.SingleTaskActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_single_task"
-            android:theme="@style/FullscreenTheme"></activity>
+            android:theme="@style/FullscreenTheme" />
+
+        <service android:name=".service.LifeCircleService" />
+
+        <activity
+            android:name=".service.ServiceMainActivity"
+            android:exported="true" />
+        <activity android:name=".service.EntryActivity" android:exported="true"></activity>
     </application>
 
 </manifest>
