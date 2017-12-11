@@ -16,6 +16,7 @@ public abstract class LZBaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate() called with: savedInstanceState = [" + savedInstanceState + "]");
+        Log.d(TAG, "taskid = " + getTaskId());
         super.onCreate(savedInstanceState);
         setContentView(layoutResID());
         initView();
