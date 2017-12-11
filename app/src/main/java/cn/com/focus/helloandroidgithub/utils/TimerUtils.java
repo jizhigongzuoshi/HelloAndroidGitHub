@@ -5,4 +5,11 @@ package cn.com.focus.helloandroidgithub.utils;
  */
 
 public class TimerUtils {
+    public static void sleep(int time){
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 }
