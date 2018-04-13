@@ -12,7 +12,6 @@ import android.view.TextureView;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import java.io.IOException;
 import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -41,14 +40,16 @@ public class SingleCameraActivity extends LZBaseActivity implements Camera.Previ
             new Thread() {
                 @Override
                 public void run() {
-                    releaseCam();
+                    //releaseCam();
                     try {
                         Thread.sleep(4000);
-                    } catch (InterruptedException e) {
+                        mCamera.startPreview();
+                    } catch (Exception e) {
                         e.printStackTrace();
+                        openCamera();
                     }
 
-                    SingleCameraActivity.this.recreate();
+
                 }
             }.start();
 
@@ -89,36 +90,34 @@ public class SingleCameraActivity extends LZBaseActivity implements Camera.Previ
     private TimerTask timerTask = new TimerTask() {
         @Override
         public void run() {
-            if (isPreview) {
-                System.out.println("\n\n\n");
-                Log.e(TAG, "stoppreview==========");
-                handler.sendMessageDelayed(Message.obtain(handler, 2), 2000);
-                mCamera.stopPreview();
-                handler.removeMessages(2);
-            } else {
-                Log.e(TAG, "startPreview==========");
-                handler.sendMessageDelayed(Message.obtain(handler, 2), 2000);
-                mCamera.startPreview();
-                handler.removeMessages(2);
-            }
+            System.out.println("\n\n\n");
+            Log.e(TAG, "stoppreview==========");
+            handler.sendMessageDelayed(Message.obtain(handler, 2), 4000);
+            startPreview(!isPreview);
+            handler.removeMessages(2);
 
             isPreview = !isPreview;
         }
     };
 
     private void openCamera() {
-        mCamera = Camera.open(2);
         try {
+            mCamera = Camera.open(2);
             mCamera.setPreviewTexture(textureView.getSurfaceTexture());
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e1) {
+                e1.printStackTrace();
+            }
         }
         Camera.Parameters parameters = mCamera.getParameters();
         mCamera.setPreviewCallback(this);
         mCamera.setParameters(parameters);
         mCamera.startPreview();
         newScheduledThreadPool = Executors.newScheduledThreadPool(1);
-        newScheduledThreadPool.scheduleAtFixedRate(timerTask, 2000, 1000, TimeUnit.MILLISECONDS);
+        newScheduledThreadPool.scheduleAtFixedRate(timerTask, 2000, 2000, TimeUnit.MILLISECONDS);
     }
 
     @Override
@@ -156,8 +155,35 @@ public class SingleCameraActivity extends LZBaseActivity implements Camera.Previ
     }
 
     private void releaseCam() {
+        mCamera.setPreviewCallback(null);
         mCamera.stopPreview();
         mCamera.release();
         mCamera = null;
+    }
+
+    private void reOpenCamera() {
+        try {
+            mCamera = Camera.open(2);
+            mCamera.setPreviewTexture(textureView.getSurfaceTexture());
+        } catch (Exception e) {
+            e.printStackTrace();
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e1) {
+                e1.printStackTrace();
+            }
+        }
+        Camera.Parameters parameters = mCamera.getParameters();
+        mCamera.setPreviewCallback(this);
+        mCamera.setParameters(parameters);
+        mCamera.startPreview();
+    }
+
+    private void startPreview(boolean isPreview) {
+        if (isPreview) {
+            mCamera.startPreview();
+        } else {
+            mCamera.stopPreview();
+        }
     }
 }

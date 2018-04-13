@@ -1,5 +1,7 @@
 package cn.com.focus.helloandroidgithub.collection;
 
+import org.junit.Test;
+
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -10,6 +12,7 @@ import java.util.Set;
  */
 
 public class MapTest {
+    @Test
     public void testLinkedHashMap() {
         Map<Integer, String> map = new LinkedHashMap<>();
         map.put(1, "a");
@@ -34,6 +37,9 @@ public class MapTest {
             Map.Entry<Integer, String> next = iterator1.next();
             System.out.println("key = " + next.getKey() + " value=" + next.getValue());
         }
+
+
+        Child child = new Child("");
     }
 
 }
